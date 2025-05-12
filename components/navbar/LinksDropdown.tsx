@@ -9,6 +9,16 @@ import { LuAlignLeft } from 'react-icons/lu';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { links } from '@/utils/links';
+import SignOutLink from './SignOutLink';
+import UserIcon from './UserIcon';
+import {
+    SignedOut,
+    SignedIn,
+    SignInButton,
+    SignUp,
+    SignUpButton,
+} from '@clerk/nextjs';
+import { Separator } from '../ui/separator';
 
 function LinksDropdown() {
     return (
@@ -16,23 +26,45 @@ function LinksDropdown() {
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex gap-4 max-w-[100px]">
                     <LuAlignLeft className="h-6 w-6" />
+                    <UserIcon />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="start" sideOffset={10}>
-                {links.map((link) => {
-                    return (
-                        <DropdownMenuItem key={link.label}>
-                            <Link
-                                href={link.href}
-                                className="capitalize w-full"
-                            >
-                                {link.label}
-                            </Link>
-                        </DropdownMenuItem>
-                    );
-                })}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <SignedOut>
+                    <DropdownMenuItem>
+                        <SignInButton mode="modal">
+                            <button className="w-full text-left capitalize">
+                                login
+                            </button>
+                        </SignInButton>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        <SignUpButton mode="modal">
+                            <button className="w-full text-left capitalize">
+                                register
+                            </button>
+                        </SignUpButton>
+                    </DropdownMenuItem>
+                </SignedOut>
+                <SignedIn>
+                    {links.map((link) => {
+                        return (
+                            <DropdownMenuItem key={link.label}>
+                                <Link
+                                    href={link.href}
+                                    className="capitalize w-full"
+                                >
+                                    {link.label}
+                                </Link>
+                            </DropdownMenuItem>
+                        );
+                    })}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        <SignOutLink />
+                    </DropdownMenuItem>
+                </SignedIn>
             </DropdownMenuContent>
         </DropdownMenu>
     );
