@@ -1,7 +1,7 @@
+'use server';
 import db from '@/utils/db';
 import { redirect } from 'next/navigation';
 
-import { NextResponse } from 'next/server';
 export async function fetchFeaturedProducts() {
     return await db.product.findMany({
         where: {
@@ -49,4 +49,13 @@ export const fetchSingleProduct = async (productId: string) => {
         return redirect('/products');
     }
     return product;
+};
+
+export const createProductAction = async (
+    prevState: any,
+    formData: FormData
+): Promise<{ message: string }> => {
+    console.log(prevState);
+    console.log(formData);
+    return { message: 'product created.. ' };
 };
